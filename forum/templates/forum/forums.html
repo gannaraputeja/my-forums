@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load staticfiles %}
+    {% load customfilters %}
+    <title>Forums</title>
+{#  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">#}
+{#  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
+{#  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>#}
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" >
+    <script src="{% static 'bootstrap/dist/jss/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+  <style>
+  body {
+      position: relative;
+  }
+  #section1 {padding-top:50px;height:150px;color: #fff; background-color: #007788;}
+  #section2 {padding-top:50px;min-height:500px;height:auto;color: #fff; background-color: #a6e1ec;color:#3c3c3c}
+  #section3 {padding-top:50px;height:120px;color: #fff; background-color: #00AA88;color:#3c3c3c}
+  #profile-button {margin-top:25px;}
+  #login-sec {margin-top:5px;margin-left:85%;}
+  #login-tab {margin-top:10%;margin-left:33%;}
+  .contact-form {color: grey;}
+  table{color:#003300;}
+  .thead {text-align: right;}
+  .footer {margin-left:33%;}
+  .button {margin-left:33%;}
+  .postquestion {margin-top:100px;}
+  </style>
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'homepage' %}">Forums</a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar" >
+
+            <ul class="nav navbar-nav">
+                <li><a href="#section1">Home</a></li>
+                <li><a href="#section2">Questions</a></li>
+                <li><a href="#section3">More</a></li>
+            </ul>
+            <div id="login-sec">
+                <a href={% url 'logout'%} class="btn btn-primary" >Logout</a>
+            </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div id="section1" class="container-fluid">
+  <div class="col-sm-10">
+      <h1>Forums</h1>
+  </div>
+</div>
+<div id="section2" class="container-fluid">
+    <div>
+        <ul class="list-group">
+    <h1>Questions <a href="/forum/question/create" class="btn btn-primary col-sm-offset-8">Ask a Question</a></h1>
+    {% for question in questions %}
+        <li class="list-group-item col-sm-3 col-sm-offset-2">
+            <span class="badge primary">{{ question|countanswers }}</span>
+            <a href="/forum/questions/{{ question.id }}" > {{ question.title|truncatechars:15 }} </a>
+        </li>
+        {% empty %}
+        <li>No Questions available</li>
+    {% endfor %}
+        </ul>
+    </div>
+</div>
+<div id="section3" class="container-fluid">
+
+    <div id="social" class="col-sm-offset-5">
+	<a target="_blank" title="follow me on facebook" href="https://www.facebook.com/gannaraputeja"><img alt="follow me on facebook" src="https://c866088.ssl.cf3.rackcdn.com/assets/facebook40x40.png" style="border-radius:100%;overflow:hidden" border=0></a>
+	<a target="_blank" title="follow me on google plus" href="mailto:gannaraputeja@gmail.com"><img alt="follow me on google plus" src="https://c866088.ssl.cf3.rackcdn.com/assets/googleplus40x40.png" border=0></a>
+    </div>
+	<div class="col-sm-offset-4">{% now "SHORT_DATETIME_FORMAT" %} &copy Raviteja Gannarapu,This page is Developed by Raviteja</div>
+</div>
+</body>
+</html>

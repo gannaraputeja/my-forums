@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load staticfiles %}
+    <title>Forums</title>
+{#  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">#}
+{#  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
+{#  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>#}
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" >
+    <script src="{% static 'bootstrap/dist/jss/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+  <style>
+  body {
+      position: relative;
+  }
+  #section1 {padding-top:50px;height:150px;color: #fff; background-color: #007788;}
+  #section2 {padding-top:50px;min-height:500px;height:auto;color: #fff; background-color: #a6e1ec;color:#3c3c3c}
+  #section3 {padding-top:50px;height:120px;color: #fff; background-color: #00AA88;color:#3c3c3c}
+  #login-sec {margin-top:5px;margin-left:85%;}
+  table{color:#003300;}
+  .postanswer {padding:10px;}
+  .comments {padding:5px 10px 5px;margin:5px;background-color: #ccddff ;border-left:3px solid #009999;}
+  .answers {background-color:#b3c6ff; border-left:3px solid #3366ff; }
+  .commentbtn {background-color: #99bbff;}
+  .answerbtn {background-color: #99bbff;}
+  .panel-body {background-color: #e6fff3;}
+  </style>
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'homepage' %}">Forums</a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar" >
+
+            <ul class="nav navbar-nav">
+                <li><a href="#section1">Home</a></li>
+                <li><a href="#section2">Question</a></li>
+                <li><a href="#section3">More</a></li>
+            </ul>
+            <div id="login-sec">
+                <a href={% url 'logout'%} class="btn btn-primary" >Logout</a>
+            </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div id="section1" class="container-fluid">
+  <div class="col-sm-10">
+      <h1>Forums</h1>
+  </div>
+</div>
+<div id="section2" class="container-fluid">
+    <h1><b>Question :</b> {{ question.question }} <sub> -   by {{ question.user.username }} </sub> <a href="{% url 'questions_list' %}" class="btn btn-primary col-sm-offset-5">View Questions</a> </h1>
+    {% for answer in answers  %}
+        {% ifequal answer.question_id question.id  %}
+            <div class="panel-group">
+                  <div class="panel">
+                    <div class="panel-heading answers"><b>Answer :</b> {{ answer.answer }} <sub> - by {{ answer.user.username }}</sub>
+{#                    <div class="col-sm-offset-9 btn btn-warning btn-xs"><a>Accept</a></div>#}
+                    </div>
+                  <div class="panel-body">
+                      <ul class="list-group list-unstyled">
+                         {% for comment in comments %}
+                            {% ifequal comment.answer_id answer.id %}
+                                <div class="comments"><li> {{ comment.comment }} <sub> - by {{ comment.user.username }}</sub> </li></div>
+                            {% endifequal %}
+                        {% endfor %}
+                      </ul>
+                      <form action="/forum/comment/create/{{ question.id }}/{{ answer.id }}" method="post">
+                          {% csrf_token %}
+                          {{ commentform }}
+                            <input type="submit" class="btn btn-primary" value="comment"/>
+                      </form>
+                  </div>
+                  </div>
+            </div>
+        {% endifequal %}
+        {% empty %}
+        <li>Not yet Answered</li>
+    {% endfor %}
+    <div class="postanswer">
+        <form action="/forum/answer/create/{{ question.id }}" method="post">
+            {% csrf_token %}
+            {{ answerform }}
+            <input type="submit" class="btn btn-primary" value="answer"/>
+        </form>
+    </div>
+</div>
+<div id="section3" class="container-fluid">
+
+    <div id="social" class="col-sm-offset-5">
+	<a target="_blank" title="follow me on facebook" href="https://www.facebook.com/Ignito-2k16-1569259106726402/"><img alt="follow me on facebook" src="https://c866088.ssl.cf3.rackcdn.com/assets/facebook40x40.png" style="border-radius:100%;overflow:hidden" border=0></a>
+	<a target="_blank" title="follow me on google plus" href="mailto:ignito2k16@gmail.com"><img alt="follow me on google plus" src="https://c866088.ssl.cf3.rackcdn.com/assets/googleplus40x40.png" border=0></a>
+    </div>
+	<div class="col-sm-offset-4">{% now "SHORT_DATETIME_FORMAT" %}  &copy Raviteja Gannarapu,This page is Developed by Raviteja</div>
+</div>
+</body>
+</html>
