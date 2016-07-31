@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'gannaraputeja$forum',
         'USER': 'gannaraputeja',
         'PASSWORD': 'raviteja',
-        'HOST': 'localhost',
+        'HOST': 'gannaraputeja.mysql.pythonanywhere-services.com',
         'PORT': '3306',
         'OPTIONS': {
             'autocommit': True,
